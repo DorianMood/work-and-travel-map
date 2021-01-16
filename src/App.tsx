@@ -7,33 +7,28 @@ const GEOCODER_API_KEY = process.env.REACT_APP_GEOCODER_API_KEY;
 const GEOCODER_BASE_URL = "http://www.mapquestapi.com/geocoding/v1/batch";
 
 function App() {
-  const [rawData, setRawData] = useState<IJob[]>([
-    {
-      name: "Test job",
-      link: "https://ya.ru",
-      tipped: true,
-      location: "Wisc Dells, WI",
-      position: [1, 1],
-    },
-    {
-      name: "Test job",
-      link: "https://ya.ru",
-      tipped: true,
-      location: "Saratoga, WY",
-      position: [1, 1],
-    },
-  ]);
+  const [rawData, setRawData] = useState<string[]>([]);
 
   const [data, setData] = useState<IJob[]>([]);
 
+  const runtimeListener = (
+    message: any,
+    sender: chrome.runtime.MessageSender,
+    callback: (response: any) => any
+  ) => {
+    setRawData(message.data);
+  };
+
   useEffect(() => {
     console.log(new URL(window.location.href).searchParams.getAll("region"));
+    //if (!chrome.runtime.onMessage.hasListener(runtimeListener)) {
+    chrome.runtime.onMessage.addListener(runtimeListener);
+    //}
   }, []);
 
   useEffect(() => {
-    const regions: string[] = new URL(window.location.href).searchParams.getAll(
-      "region"
-    );
+    const regions: string[] = rawData.filter((item) => item !== "");
+    console.log(rawData);
 
     const url = `${GEOCODER_BASE_URL}?key=${GEOCODER_API_KEY}&location=${regions
       .map((item) => encodeURI(item))
