@@ -27,16 +27,16 @@ function App() {
   const [data, setData] = useState<IJob[]>([]);
 
   useEffect(() => {
-    const body = {
-      batch: rawData.map((item) => ({ query: item.location, country: "US" })),
-    };
+    console.log(new URL(window.location.href).searchParams.getAll("region"));
+  }, []);
 
-    const config = {
-      headers: { "Content-Type": "application/json" },
-    };
+  useEffect(() => {
+    const regions: string[] = new URL(window.location.href).searchParams.getAll(
+      "region"
+    );
 
-    const url = `${GEOCODER_BASE_URL}?key=${GEOCODER_API_KEY}&location=${rawData
-      .map((item) => encodeURI(item.location))
+    const url = `${GEOCODER_BASE_URL}?key=${GEOCODER_API_KEY}&location=${regions
+      .map((item) => encodeURI(item))
       .join("&location=")}&limit=${rawData.length}`;
 
     console.log(url);
@@ -47,7 +47,7 @@ function App() {
         const results: any[] = response.data?.results;
         const locations: any[] = [].concat.apply(
           [],
-          results.map((item) => [item.locations[0]])
+          results.map((item) => item.locations)
         );
         setData(
           locations.map((item) => {

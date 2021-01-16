@@ -1,25 +1,25 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
-  "icons": [
+  "manifest_version": 2,
+
+  "short_name": "W&T map",
+  "name": "Work&Travel map",
+  "version": "0.0.1",
+  "description": "This app can help you to visualize Work&Travel programme jobs on map.",
+  "browser_action": {
+    "default_icon": "logo512.png",
+    "default_popup": "popup.html"
+  },
+  "background": {
+    "page": "index.html"
+  },
+  "content_scripts": [
     {
-      "src": "favicon.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
-    },
-    {
-      "src": "logo192.png",
-      "type": "image/png",
-      "sizes": "192x192"
-    },
-    {
-      "src": "logo512.png",
-      "type": "image/png",
-      "sizes": "512x512"
+      "matches": ["https://app.interexchange.org/job_listings*"],
+      "js": ["jquery-3.5.1.min.js", "content.js"]
     }
   ],
-  "start_url": ".",
-  "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "content_security_policy": "script-src 'self' https://unpkg.com/; object-src 'self'",
+  "icons": {
+    "512": "logo512.png"
+  }
 }
