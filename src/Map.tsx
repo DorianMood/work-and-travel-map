@@ -19,7 +19,7 @@ export default function Map(props: IMapProps) {
 
   return (
     <div style={{ height: "100vh", width: "100vw" }}>
-      <MapContainer center={[51.505, -0.09]} zoom={13}>
+      <MapContainer center={[40, -90]} zoom={5}>
         <TileLayer
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
