@@ -41,7 +41,6 @@ $(document).ready(() => {
 
   chrome.runtime.onMessage.addListener((message, sender, callback) => {
     if (message["type"] === "WORK_AND_TRAVEL_PARSE") {
-      console.log("Sending data back to extension");
       callback({ type: "WORK_AND_TRAVEL_PARSE_DONE", data: parseRegions() });
     }
   });

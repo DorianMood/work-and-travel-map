@@ -8,7 +8,7 @@ const GEOCODER_API_KEY = "Yyq4fbX9mEdB41MneJmVVFaGRcdYY4f1";
 const GEOCODER_BASE_URL = "http://www.mapquestapi.com/geocoding/v1/batch";
 
 function App() {
-  const [rawData, setRawData] = useState<string[]>([]);
+  const [rawData, setRawData] = useState<any[]>([]);
 
   const [data, setData] = useState<IJob[]>([]);
 
@@ -32,14 +32,11 @@ function App() {
   }, []);
 
   useEffect(() => {
-    console.log(rawData);
     const regions: string[] = rawData.map((item: any) => item.location);
 
     const url = `${GEOCODER_BASE_URL}?key=${GEOCODER_API_KEY}&location=${regions
       .map((item) => encodeURI(item))
-      .join("&location=")}&limit=${rawData.length}`;
-
-    console.log(url);
+      .join("&location=")}&maxResults=1`;
 
     axios
       .get(url)
@@ -49,14 +46,13 @@ function App() {
           [],
           results.map((item) => item.locations)
         );
-        console.log(locations);
         setData(
           locations.map((item, index) => {
             return {
-              name: "1",
-              link: "link",
-              tipped: true,
-              location: "1",
+              name: rawData[index].name,
+              link: rawData[index].link,
+              tipped: rawData[index].tipped,
+              location: rawData[index].location,
               position: [item["latLng"]["lat"], item["latLng"]["lng"]],
             };
           })

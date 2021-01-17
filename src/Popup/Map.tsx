@@ -30,7 +30,13 @@ export default function Map(props: IMapProps) {
       {data?.map((item, index) => {
         return (
           <Marker position={item.position} key={index}>
-            <Popup>{item.name}</Popup>
+            <Popup>
+              <h3>
+                <a href={item.link}>{item.name}</a>
+              </h3>
+              <p>{item.location}</p>
+              {item.tipped ? <p color="red">Tipped</p> : null}
+            </Popup>
           </Marker>
         );
       })}
