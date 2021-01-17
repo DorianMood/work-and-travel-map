@@ -1,6 +1,5 @@
 import axios, { AxiosResponse } from "axios";
 import React, { useEffect, useState } from "react";
-import "./App.css";
 import Map, { IJob } from "./Map";
 
 const GEOCODER_API_KEY = process.env.REACT_APP_GEOCODER_API_KEY;
