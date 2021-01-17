@@ -18,20 +18,22 @@ export default function Map(props: IMapProps) {
   const { data } = props;
 
   return (
-    <div style={{ height: "100vh", width: "100vw" }}>
-      <MapContainer center={[40, -90]} zoom={5}>
-        <TileLayer
-          attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
-        {data?.map((item, index) => {
-          return (
-            <Marker position={item.position} key={index}>
-              <Popup>{item.name}</Popup>
-            </Marker>
-          );
-        })}
-      </MapContainer>
-    </div>
+    <MapContainer
+      center={[40, -90]}
+      zoom={5}
+      style={{ height: "100%", width: "100%" }}
+    >
+      <TileLayer
+        attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+      />
+      {data?.map((item, index) => {
+        return (
+          <Marker position={item.position} key={index}>
+            <Popup>{item.name}</Popup>
+          </Marker>
+        );
+      })}
+    </MapContainer>
   );
 }

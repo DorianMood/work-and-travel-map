@@ -2,7 +2,9 @@ import axios, { AxiosResponse } from "axios";
 import React, { useEffect, useState } from "react";
 import Map, { IJob } from "./Map";
 
-const GEOCODER_API_KEY = process.env.REACT_APP_GEOCODER_API_KEY;
+// TODO : better hide this somewhere, atleast from repo
+
+const GEOCODER_API_KEY = "Yyq4fbX9mEdB41MneJmVVFaGRcdYY4f1";
 const GEOCODER_BASE_URL = "http://www.mapquestapi.com/geocoding/v1/batch";
 
 function App() {
@@ -10,24 +12,28 @@ function App() {
 
   const [data, setData] = useState<IJob[]>([]);
 
-  const runtimeListener = (
-    message: any,
-    sender: chrome.runtime.MessageSender,
-    callback: (response: any) => any
-  ) => {
-    setRawData(message.data);
-  };
-
   useEffect(() => {
-    console.log(new URL(window.location.href).searchParams.getAll("region"));
-    //if (!chrome.runtime.onMessage.hasListener(runtimeListener)) {
-    chrome.runtime.onMessage.addListener(runtimeListener);
-    //}
+    chrome.tabs.query(
+      { active: true, currentWindow: true },
+      (tabs: chrome.tabs.Tab[]) => {
+        chrome.tabs.sendMessage(
+          tabs[0].id ?? 0,
+          {
+            type: "WORK_AND_TRAVEL_PARSE",
+          },
+          (response: any) => {
+            if (response.type === "WORK_AND_TRAVEL_PARSE_DONE") {
+              setRawData(response.data);
+            }
+          }
+        );
+      }
+    );
   }, []);
 
   useEffect(() => {
-    const regions: string[] = rawData.filter((item) => item !== "");
     console.log(rawData);
+    const regions: string[] = rawData.map((item: any) => item.location);
 
     const url = `${GEOCODER_BASE_URL}?key=${GEOCODER_API_KEY}&location=${regions
       .map((item) => encodeURI(item))
@@ -43,8 +49,9 @@ function App() {
           [],
           results.map((item) => item.locations)
         );
+        console.log(locations);
         setData(
-          locations.map((item) => {
+          locations.map((item, index) => {
             return {
               name: "1",
               link: "link",
@@ -60,10 +67,8 @@ function App() {
       });
   }, [rawData]);
 
-  console.log(data);
-
   return (
-    <div>
+    <div style={{ width: 600, height: 550 }}>
       <Map data={data} />
     </div>
   );

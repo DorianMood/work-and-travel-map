@@ -14,6 +14,9 @@ const plugins = [
     template: 'src/Popup/popup.html',
     filename: 'popup.html',
     chunks: ['popup'],
+    apiKeys: {
+      GEOCODER: process.env.REACT_APP_GEOCODER_API_KEY
+    }
   }),
   new CopyWebpackPlugin({
     patterns: [
@@ -31,7 +34,7 @@ module.exports = {
   },
   entry: {
     popup: './src/Popup/index.tsx',
-    contentscript: './src/contentscript.ts',
+    content: './src/content.ts',
   },
   output: {
     filename: '[name].js',

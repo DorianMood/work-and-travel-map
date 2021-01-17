@@ -5,7 +5,6 @@
   "name": "Work&Travel map",
   "version": "0.0.1",
   "description": "This app can help you to visualize Work&Travel programme jobs on map.",
-  "main": "index.js",
   "browser_action": {
     "default_icon": "logo512.png",
     "default_popup": "popup.html"
